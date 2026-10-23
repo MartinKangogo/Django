@@ -1,1 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#f8fafc">
+    <meta name="description" content="Django Masterclass Handbook - A professional responsive Django learning reference.">
+    <title>Django Masterclass Handbook | Python Based Web Framework | Developed by Kangogo K. Martin </title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --surface: rgba(255, 255, 255, 0.85);
+            --surface-solid: #ffffff;
+            --surface-soft: #f1f5f9;
+            --text: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --blue: #0284c7;
+            --blue-dark: #0369a1;
+            --blue-light: #e0f2fe;
+            --yellow: #eab308;
+            --yellow-light: #fef9c3;
+            --orange: #f97316;
+            --orange-light: #ffedd5;
+            --red: #ef4444;
+            --red-light: #fee2e2;
+            --green: #22c55e;
+            --green-light: #dcfce7;
+            --border: rgba(15, 23, 42, 0.08);
+            --border-strong: rgba(15, 23, 42, 0.15);
+            --code-bg: #0f172a;
+            --code-text: #f8fafc;
+            --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 15px 35px rgba(0, 0, 0, 0.06);
+            --radius-sm: 12px;
+            --radius-md: 20px;
+            --radius-lg: 28px;
+            --header-height: 64px;
+            color-scheme: light;
+        }
+        body.dark {
+            --bg: #090d16;
+            --surface: rgba(15, 23, 42, 0.85);
+            --surface-solid: #0f172a;
+            --surface-soft: #1e293b;
+            --text: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --blue: #38bdf8;
+            --blue-dark: #0ea5e9;
+            --blue-light: rgba(56, 189, 248, 0.12);
+            --yellow: #facc15;
+            --yellow-light: rgba(250, 204, 21, 0.12);
+            --orange: #fb923c;
+            --orange-light: rgba(251, 146, 60, 0.12);
+            --red: #f87171;
+            --red-light: rgba(248, 113, 113, 0.12);
+            --green: #4ade80;
+            --green-light: rgba(74, 222, 128, 0.12);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-strong: rgba(255, 255, 255, 0.15);
+            --code-bg: #020617;
+            --code-text: #f8fafc;
+            color-scheme: dark;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 90px;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.65;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        img { max-width: 100%; }
+        button, input { font: inherit; }
+        a { color: inherit; text-decoration: none; }
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 max(20px, 4vw);
+            background: color-mix(in srgb, var(--surface-solid) 80%, transparent);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border-bottom: 1px solid var(--border);
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font-weight: 750;
+            letter-spacing: -0.02em;
+        }
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            border-radius: 11px;
+            color: white;
+            background: linear-gradient(135deg, var(--blue), var(--orange));
+            box-shadow: 0 7px 20px rgba(2, 132, 199, 0.25);
+            font-size: 18px;
+        }
+        .brand-text { font-size: 15px; }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border);
+            background: var(--surface-soft);
+            color: var(--text);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+        .icon-btn:hover {
+            transform: scale(1.06);
+            background: var(--blue-light);
+            color: var(--blue);
+        }
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .hamburger span {
+            width: 17px;
+            height: 2px;
+            border-radius: 5px;
+            background: currentColor;
+            transition: 0.3s ease;
+        }
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            z-index: 2000;
+            background: linear-gradient(90deg, var(--blue), var(--yellow), var(--orange), var(--red), var(--green));
+        }
+        .drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            z-index: 1100;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s ease;
+        }
+        .drawer-overlay.active { opacity: 1; visibility: visible; }
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: min(390px, 77vw);
+            height: 100vh;
+            height: 100dvh;
+            z-index: 1200;
+            background: var(--surface-solid);
+            padding: 85px 24px 30px;
+            overflow-y: auto;
+            transform: translateX(105%);
+            transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+            border-left: 1px solid var(--border);
+        }
+        .drawer.active { transform: translateX(0); }
+        .drawer-header { margin-bottom: 25px; }
+        .drawer-title { font-size: 24px; font-weight: 750; letter-spacing: -0.03em; }
+        .drawer-subtitle { color: var(--text-secondary); font-size: 14px; margin-top: 4px; }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 12px 14px;
+            margin-bottom: 6px;
+            border-radius: 13px;
+            color: var(--text-secondary);
+            transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+        .nav-link:hover {
+            background: var(--blue-light);
+            color: var(--blue);
+            transform: translateX(3px);
+        }
+        .nav-number {
+            width: 29px;
+            height: 29px;
+            display: grid;
+            place-items: center;
+            border-radius: 9px;
+            background: var(--surface-soft);
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .hero {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 130px 20px 70px;
+            text-align: center;
+        }
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: var(--yellow-light);
+            color: var(--yellow);
+            font-size: 13px;
+            font-weight: 750;
+            margin-bottom: 20px;
+        }
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--orange);
+            box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.15);
+        }
+        .hero h1 {
+            font-size: clamp(2.2rem, 6vw, 4.5rem);
+            line-height: 1.1;
+            letter-spacing: -0.055em;
+            font-weight: 850;
+            max-width: 900px;
+            margin: auto;
+            background: linear-gradient(135deg, var(--text) 20%, var(--blue) 60%, var(--orange) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .hero-description {
+            max-width: 760px;
+            margin: 24px auto 0;
+            color: var(--text-secondary);
+            font-size: clamp(0.95rem, 2vw, 1.15rem);
+        }
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 30px;
+        }
+        .primary-btn, .secondary-btn {
+            border: 0;
+            padding: 12px 22px;
+            border-radius: 999px;
+            font-weight: 650;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .primary-btn {
+            color: white;
+            background: linear-gradient(135deg, var(--blue), var(--orange));
+            box-shadow: 0 10px 25px rgba(2, 132, 199, 0.25);
+        }
+        .secondary-btn {
+            color: var(--text);
+            background: var(--surface-solid);
+            border: 1px solid var(--border-strong);
+        }
+        .primary-btn:hover, .secondary-btn:hover { transform: translateY(-2px); }
+        .stats {
+            max-width: 900px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        .stat {
+            padding: 20px 15px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(15px);
+        }
+        .stat-number { font-size: 24px; font-weight: 800; color: var(--blue); }
+        .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+        .container {
+            width: min(1080px, calc(100% - 40px));
+            margin: 0 auto;
+            padding-bottom: 100px;
+        }
+        .search-box {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 16px 20px 16px 48px;
+            border-radius: 17px;
+            border: 1px solid var(--border-strong);
+            outline: none;
+            color: var(--text);
+            background: var(--surface-solid);
+            box-shadow: var(--shadow-sm);
+            transition: 0.2s ease;
+        }
+        .search-box input:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 4px var(--blue-light);
+        }
+        .search-icon {
+            position: absolute;
+            left: 17px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+        .section-card {
+            position: relative;
+            background: var(--surface-solid);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: clamp(22px, 4vw, 38px);
+            margin-bottom: 22px;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .section-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: rgba(2, 132, 199, 0.2);
+        }
+        .section-heading {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 16px;
+        }
+        .section-icon {
+            flex: 0 0 auto;
+            width: 45px;
+            height: 45px;
+            display: grid;
+            place-items: center;
+            border-radius: 13px;
+            background: var(--blue-light);
+            color: var(--blue);
+            font-size: 20px;
+        }
+        h2 {
+            font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+            line-height: 1.2;
+            letter-spacing: -0.035em;
+            margin-bottom: 5px;
+        }
+        .section-label {
+            color: var(--orange);
+            font-size: 12px;
+            font-weight: 750;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        h3 {
+            font-size: 1.05rem;
+            color: var(--text);
+            margin: 25px 0 10px;
+            letter-spacing: -0.01em;
+        }
+        p, li {
+            color: var(--text-secondary);
+            font-size: clamp(0.92rem, 1.4vw, 1rem);
+        }
+        p { margin-bottom: 12px; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 9px; }
+        strong { color: var(--text); }
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin: 15px 0;
+        }
+        .tag {
+            padding: 5px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 650;
+            background: var(--surface-soft);
+            color: var(--text-secondary);
+        }
+        .tag.blue { color: var(--blue); background: var(--blue-light); }
+        .tag.green { color: var(--green); background: var(--green-light); }
+        .tag.orange { color: var(--orange); background: var(--orange-light); }
+        .tag.yellow { color: var(--yellow); background: var(--yellow-light); }
+        .tag.red { color: var(--red); background: var(--red-light); }
+        .code-wrapper {
+            position: relative;
+            margin: 15px 0 20px;
+        }
+        pre {
+            margin: 0;
+            padding: 18px;
+            overflow-x: auto;
+            border-radius: 15px;
+            background: var(--code-bg);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        pre code {
+            color: var(--code-text);
+            font-family: Consolas, monospace;
+            font-size: clamp(0.75rem, 1.3vw, 0.85rem);
+            line-height: 1.6;
+            white-space: pre;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            padding: 5px 9px;
+            border-radius: 8px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: rgba(255, 255, 255, 0.16); }
+        code:not(pre code) {
+            padding: 2px 6px;
+            border-radius: 6px;
+            background: var(--surface-soft);
+            color: var(--blue);
+            font-family: monospace;
+            font-size: 0.85em;
+        }
+        .callout {
+            display: flex;
+            gap: 13px;
+            margin: 20px 0;
+            padding: 17px;
+            border-radius: 15px;
+            background: var(--yellow-light);
+            border-left: 3px solid var(--yellow);
+            color: var(--text);
+        }
+        .callout.info {
+            background: var(--blue-light);
+            border-left-color: var(--blue);
+        }
+        .callout.alert {
+            background: var(--red-light);
+            border-left-color: var(--red);
+        }
+        .callout-icon { font-size: 19px; }
+        .callout p { margin: 0; color: var(--text); }
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 20px 0;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+        }
+        table {
+            width: 100%;
+            min-width: 550px;
+            border-collapse: collapse;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+        th { background: var(--surface-soft); color: var(--text); }
+        td { color: var(--text-secondary); }
+        tr:last-child td { border-bottom: 0; }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .feature {
+            padding: 16px;
+            border: 1px solid var(--border);
+            background: var(--surface-soft);
+            border-radius: 16px;
+        }
+        .feature-icon { font-size: 20px; margin-bottom: 8px; }
+        .feature h4 { font-size: 14px; margin-bottom: 4px; }
+        .feature p { font-size: 12px; margin: 0; }
+        footer {
+            border-top: 1px solid var(--border);
+            background: var(--surface-solid);
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .footer-title { font-weight: 750; margin-bottom: 6px; }
+        footer p { color: var(--text-muted); font-size: 12px; }
+        .back-top {
+            position: fixed;
+            right: 20px;
+            bottom: 22px;
+            width: 42px;
+            height: 42px;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            background: var(--surface-solid);
+            color: var(--text);
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: 0.25s ease;
+            z-index: 900;
+        }
+        .back-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .section-card.hidden { display: none; }
+        @media (max-width: 850px) {
+            .stats, .feature-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .header { padding-left: 15px; padding-right: 15px; }
+            .brand-text { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+            .hero { padding-top: 110px; padding-bottom: 45px; }
+            .hero h1 { font-size: clamp(2rem, 11vw, 3.2rem); }
+            .hero-buttons { flex-direction: column; }
+            .primary-btn, .secondary-btn { width: 100%; }
+            .stats { gap: 8px; margin-bottom: 35px; }
+            .stat { padding: 12px 6px; }
+            .stat-number { font-size: 18px; }
+            .container { width: min(100% - 20px, 1080px); }
+            .section-card { border-radius: 18px; padding: 18px; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .copy-btn { display: none; }
+            .back-top { right: 12px; bottom: 12px; }
+        }
+    </style>
+</head>
+<body>
+<div class="reading-progress" id="readingProgress"></div>
+<header class="header">
+    <a href="#" class="brand">
+        <span class="brand-icon">D</span>
+        <span class="brand-text">CODEWITHMARTIN</span>
+    </a>
+    <div class="header-actions">
+        <button class="icon-btn" id="themeToggle" aria-label="Toggle dark mode">☾</button>
+        <button class="icon-btn" id="menuButton" aria-label="Open navigation">
+            <span class="hamburger"><span></span><span></span><span></span></span>
+        </button>
+    </div>
+</header>
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<nav class="drawer" id="drawer">
+    <div class="drawer-header">
+        <div class="drawer-title">DJANGO</div>
+        <div class="drawer-subtitle">Step-by-Step Learning Order</div>
+    </div>
+    <a class="nav-link" href="#intro"><span class="nav-number">01</span>What is Django?</a>
+    <a class="nav-link" href="#setup"><span class="nav-number">02</span>Installation & Setup</a>
+    <a class="nav-link" href="#mvt"><span class="nav-number">03</span>MVT Architecture</a>
+    <a class="nav-link" href="#urls"><span class="nav-number">04</span>URL Routing</a>
+    <a class="nav-link" href="#views"><span class="nav-number">05</span>Views & Templates</a>
+    <a class="nav-link" href="#apps"><span class="nav-number">06</span>Apps & Forms</a>
+    <a class="nav-link" href="#models"><span class="nav-number">07</span>ORM & Models</a>
+    <a class="nav-link" href="#admin"><span class="nav-number">08</span>Admin & Migrations</a>
+    <a class="nav-link" href="#auth"><span class="nav-number">09</span>Authentication</a>
+    <a class="nav-link" href="#static"><span class="nav-number">10</span>Static & Media Files</a>
+    <a class="nav-link" href="#api"><span class="nav-number">11</span>REST APIs</a>
+    <a class="nav-link" href="#security"><span class="nav-number">12</span>Security Checklist</a>
+    <a class="nav-link" href="#deployment"><span class="nav-number">13</span>Deployment</a>
+    <a class="nav-link" href="#commands"><span class="nav-number">14</span>Cheat Sheet Commands</a>
+    <a class="nav-link" href="#best"><span class="nav-number">15</span>Best Practices</a>
+</nav>
+<section class="hero">
+    <div class="eyebrow">
+        <span class="eyebrow-dot"></span>
+        Professional Reference Guide
+    </div>
+    <h1>Django Masterclass Handbook</h1>
+    <p class="hero-description">
+        From absolute fundamentals to advanced production deployment. 
+        Designed with a structured workflow and color-coded components.
+    </p>
+    <div class="tags" style="justify-content:center;">
+        <span class="tag blue">Python</span>
+        <span class="tag orange">Django</span>
+        <span class="tag green">Backend</span>
+        <span class="tag yellow">MVT</span>
+        <span class="tag red">Security</span>
+    </div>
+    <div class="hero-buttons">
+        <a href="#intro" class="primary-btn">Start Learning →</a>
+        <a href="#commands" class="secondary-btn">View Cheat Sheet</a>
+    </div>
+</section>
+<section class="stats">
+    <div class="stat">
+        <div class="stat-number">15</div>
+        <div class="stat-label">Core Modules</div>
+    </div>
+    <div class="stat">
+        <div class="stat-number">40+</div>
+        <div class="stat-label">Code Examples</div>
+    </div>
+    <div class="stat">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Responsive UI</div>
+    </div>
+    <div class="stat">
+        <div class="stat-number">PRO</div>
+        <div class="stat-label">Standard</div>
+    </div>
+</section>
+<main class="container">
+    <div class="search-box">
+        <span class="search-icon">⌕</span>
+        <input type="search" id="searchInput" placeholder="Search Django topics, commands, models..." aria-label="Search handbook">
+    </div>
+    <section class="section-card" id="intro">
+        <div class="section-heading">
+            <div class="section-icon">🚀</div>
+            <div>
+                <div class="section-label">Chapter 01 - Basics</div>
+                <h2>What is Django?</h2>
+            </div>
+        </div>
+        <p>Django is a high-level Python web framework that encourages rapid development and clean, pragmatic design.</p>
+        <div class="feature-grid">
+            <div class="feature">
+                <div class="feature-icon" style="color:var(--red);">🛡️</div>
+                <h4>Secure by Design</h4>
+                <p>Helps developers avoid common security mistakes automatically.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon" style="color:var(--blue);">⚡</div>
+                <h4>Extremely Fast</h4>
+                <p>Designed to take applications from concept to completion quickly.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon" style="color:var(--green);">🗄️</div>
+                <h4>Built-in ORM</h4>
+                <p>Interact with your database cleanly using native Python syntax.</p>
+            </div>
+        </div>
+    </section>
+    <section class="section-card" id="setup">
+        <div class="section-heading">
+            <div class="section-icon">⚙️</div>
+            <div>
+                <div class="section-label">Chapter 02 - Setup</div>
+                <h2>Installation & Project Setup</h2>
+            </div>
+        </div>
+        <p>Follow these precise steps to set up your local development environment.</p>
+        <h3>1. Create Virtual Environment</h3>
+        <div class="code-wrapper">
+            <button class="copy-btn">Copy</button>
+            <pre><code>python -m venv .venv</code></pre>
+        </div>
+        <h3>2. Activate Environment</h3>
+        <div class="code-wrapper">
+            <button class="copy-btn">Copy</button>
+            <pre><code># Windows
+.venv\Scripts\activate
+
+# macOS / Linux
+source .venv/bin/activate</code></pre>
+        </div>
+        <h3>3. Install Django & Initialize Project</h3>
+        <div class="code-wrapper">
+            <button class="copy-btn">Copy</button>
+            <pre><code>pip install django
+django-admin startproject config
+cd config
+python manage.py runserver</code></pre>
+        </div>
+        <div class="callout info">
+            <div class="callout-icon">💡</div>
+            <p>Access your local development server at <strong>http://127.0.0.1:8000</strong></p>
+        </div>
+    </section>
+    <section class="section-card" id="mvt">
+        <div class="section-heading">
+            <div class="section-icon">🏗️</div>
+            <div>
+                <div class="section-label">Chapter 03 - Architecture</div>
+                <h2>MVT Architecture</h2>
+            </div>
+        </div>
+        <p>Django follows the Model-View-Template architectural pattern.</p>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Layer</th>
+                        <th>Role & Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Model</strong></td>
+                        <td>Acts as the data source and handles database schema mapping.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>View</strong></td>
+                        <td>Processes requests, executes business logic, and returns responses.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Template</strong></td>
+                        <td>Handles the HTML user interface presentation logic.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section class="section-card" id="urls">
+        <div class="section-heading">
+            <div class="section-icon">🔗</div>
+            <div>
+                <div class="section-label">Chapter 04 - Routing</div>
+                <h2>URL Routing</h2>
+            </div>
+        </div>
+        <p>URLconfs route browser requests to the appropriate view function.</p>
+        <div class="code-wrapper">
+            <button class="copy-btn">Copy</button>
+            <pre><code>from django.contrib import admin
+from django.urls import include, path
+
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("", include("core.urls")),
+]</code></pre>
+        </div>
+    </section>
+    <section class="section-card" id="views">
+        <div class="section-heading">
+            <div class="section-icon">👁️</div>
+            <div>
+                <div class="section-label">Chapter 05 - Logic</div>
+                <h2>Views & Templates</h2>
+            </div>
+        </div>
+        <p>Views receive web requests and return web responses using template rendering.</p>
+        <div class="code-wrapper">
+            <button class="copy-btn">Copy</button>
+            <pre><code>from django.shortcuts import render
+
+def home_view(request):
+    context = {"message": "Welcome to Django Masterclass!"}
+    return render(request, "home.html", context)</code></pre>
+        </div>
+    </section>
+    <section class="section-card" id="apps">
+        <div class="section-heading">
+            <div class="section-icon">🧩</div>
+            <div>
+                <div class="section-label">Chapter 06 - Modularization</div>
+                <h2>Apps & Forms</h2>
+            </div>
+        </div>
+        <p>Django apps separate features into modular, reusable components.</p>
+        <div class="code-wrapper">
+            <button class="copy-btn">Copy</button>
+            <pre><code>python manage.py startapp products</code></pre>
+        </div>
+        <h3>Define Django Form</h3>
+        <div class="code-wrapper">
+            <button class="copy-btn">Copy</button>
+            <pre><code>from django import forms
+
+class ProductForm(forms.Form):
+    title = forms.CharField(max_length=100)
+    price = forms.DecimalField(max_digits=8, decimal_places=2)</code></pre>
+        </div>
+    </section>
+    <section class="section-card" id="models">
+        <div class="section-heading">
+            <div class="section-icon">🗄️</div>
+            <div>
+                <div class="section-label">Chapter 07 - Database</div>
+                <h2>Models & Django ORM</h2>
+            </div>
+        </div>
+        <p>Define database tables using elegant Python classes.</p>
+        <div class="code-wrapper">
+            <button class="copy-btn">Copy</button>
+            <pre><code>from django.db import models
+
+class Item(models.Model):
+    name = models.CharField(max_length=120)
+    in_stock = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name</code></pre>
+        </div>
+    </section>
+    <section class="section-card" id="admin">
+        <div class="section-heading">
+            <div class="section-icon">🛠️</div>
+            <div>
+                <div class="section-label">Chapter 08 - Management</div>
+                <h2>Admin & Migrations</h2>
+            </div>
+        </div>
+        <p>Generate database migration files and apply changes effortlessly.</p>
+        <div class="code-wrapper">
+            <button class="copy-btn">Copy</button>
+            <pre><code>python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser</code></pre>
+        </div>
+    </section>
+
+    <section class="section-card" id="auth">
+        <div class="section-heading">
+            <div class="section-icon">🔐</div>
+            <div>
+                <div class="section-label">Chapter 09 - Protection</div>
+                <h2>Authentication System</h2>
+            </div>
+        </div>
+        <p>Secure views by checking user authentication status directly inside request instances.</p>
+        <div class="code-wrapper">
+            <button class="copy-btn">Copy</button>
+            <pre><code>from django.shortcuts import redirect
+
+def dashboard_view(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    return render(request, "dashboard.html")</code></pre>
+        </div>
+    </section>
+    <section class="section-card" id="static">
+        <div class="section-heading">
+            <div class="section-icon">🎨</div>
+            <div>
+                <div class="section-label">Chapter 10 - Assets</div>
+                <h2>Static & Media Files</h2>
+            </div>
+        </div>
+        <p>Manage stylesheets, client scripts, and user-uploaded media files cleanly.</p>
+        <div class="code-wrapper">
+            <button class="copy-btn">Copy</button>
+            <pre><code>{% load static %}
+&lt;link rel="stylesheet" href="{% static 'css/main.css' %}"&gt;</code></pre>
+        </div>
+    </section>
+    <section class="section-card" id="api">
+        <div class="section-heading">
+            <div class="section-icon">⚡</div>
+            <div>
+                <div class="section-label">Chapter 11 - Advanced</div>
+                <h2>REST APIs with DRF</h2>
+            </div>
+        </div>
+        <p>Transform standard Django applications into robust API backends using Django REST Framework.</p>
+        <div class="code-wrapper">
+            <button class="copy-btn">Copy</button>
+            <pre><code>pip install djangorestframework</code></pre>
+        </div>
+    </section>
+    <section class="section-card" id="security">
+        <div class="section-heading">
+            <div class="section-icon">🛡️</div>
+            <div>
+                <div class="section-label">Chapter 12 - Hardening</div>
+                <h2>Security Best Practices</h2>
+            </div>
+        </div>
+        <ul>
+            <li>Keep <code>DEBUG = False</code> in production servers.</li>
+            <li>Protect sensitive keys using environment variables.</li>
+            <li>Maintain precise control over <code>ALLOWED_HOSTS</code>.</li>
+            <li>Always leverage built-in CSRF and SQL injection protections.</li>
+        </ul>
+    </section>
+    <section class="section-card" id="deployment">
+        <div class="section-heading">
+            <div class="section-icon">🚀</div>
+            <div>
+                <div class="section-label">Chapter 13 - Production</div>
+                <h2>Deployment Strategy</h2>
+            </div>
+        </div>
+        <p>Deploy your Django project using production-ready WSGI/ASGI servers, PostgreSQL databases, and secure HTTPS channels.</p>
+    </section>
+    <section class="section-card" id="commands">
+        <div class="section-heading">
+            <div class="section-icon">⌘</div>
+            <div>
+                <div class="section-label">Chapter 14 - Cheat Sheet</div>
+                <h2>Essential Django Commands</h2>
+            </div>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Command</th>
+                        <th>Functionality</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>python manage.py runserver</code></td>
+                        <td>Launches the local development server</td>
+                    </tr>
+                    <tr>
+                        <td><code>python manage.py startapp [name]</code></td>
+                        <td>Scaffolds a new module application</td>
+                    </tr>
+                    <tr>
+                        <td><code>python manage.py makemigrations</code></td>
+                        <td>Creates structural migration files</td>
+                    </tr>
+                    <tr>
+                        <td><code>python manage.py migrate</code></td>
+                        <td>Applies database schema updates</td>
+                    </tr>
+                    <tr>
+                        <td><code>python manage.py shell</code></td>
+                        <td>Opens interactive Python shell with app context</td>
+                    </tr>
+                    <tr>
+                        <td><code>python manage.py collectstatic</code></td>
+                        <td>Gathers static assets for deployment</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section class="section-card" id="best">
+        <div class="section-heading">
+            <div class="section-icon">⭐</div>
+            <div>
+                <div class="section-label">Chapter 15 - Mastery</div>
+                <h2>Professional Best Practices</h2>
+            </div>
+        </div>
+        <ul>
+            <li>Always isolate project environments utilizing virtual environments.</li>
+            <li>Maintain updated requirement logs inside dependency manifests.</li>
+            <li>Structure complex apps logically into clean modular sub-packages.</li>
+            <li>Test business logic rigorously using built-in testing tools.</li>
+        </ul>
+        <div class="callout alert">
+            <div class="callout-icon">🔥</div>
+            <p><strong>Mastery Rule:</strong> Never hardcode configurations. Rely entirely on environment variables for production security.</p>
+        </div>
+    </section>
+</main>
+<footer>
+    <div class="footer-title">Django Masterclass Handbook</div>
+    <p>Python Based Web Framework</p>
+    <p style="margin-top:8px;">© 2026 Martin K. Kangogo</p>
+</footer>
+<button class="back-top" id="backTop" aria-label="Back to top">↑</button>
+<script>
+    const menuButton = document.getElementById("menuButton");
+    const drawer = document.getElementById("drawer");
+    const drawerOverlay = document.getElementById("drawerOverlay");
+    const navLinks = document.querySelectorAll(".nav-link");
+
+    function openDrawer() {
+        if (drawer) drawer.classList.add("active");
+        if (drawerOverlay) drawerOverlay.classList.add("active");
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeDrawer() {
+        if (drawer) drawer.classList.remove("active");
+        if (drawerOverlay) drawerOverlay.classList.remove("active");
+        document.body.style.overflow = "";
+    }
+
+    if (menuButton) {
+        menuButton.addEventListener("click", () => {
+            if (drawer && drawer.classList.contains("active")) { 
+                closeDrawer(); 
+            } else { 
+                openDrawer(); 
+            }
+        });
+    }
+
+    if (drawerOverlay) {
+        drawerOverlay.addEventListener("click", closeDrawer);
+    }
+
+    if (navLinks) {
+        navLinks.forEach(link => { 
+            link.addEventListener("click", closeDrawer); 
+        });
+    }
+
+    const themeToggle = document.getElementById("themeToggle");
+
+    if (themeToggle) {
+        themeToggle.addEventListener("click", () => {
+            document.body.classList.toggle("dark");
+            const isDark = document.body.classList.contains("dark");
+            themeToggle.textContent = isDark ? "☀" : "☾";
+        });
+    }
+
+    const progress = document.getElementById("readingProgress");
+    function updateProgress() {
+        if (!progress) return;
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        const documentHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const percentage = documentHeight > 0 ? (scrollTop / documentHeight) * 100 : 0;
+        progress.style.width = percentage + "%";
+    }
+
+    document.addEventListener("scroll", updateProgress, { passive: true });
+
+    const backTop = document.getElementById("backTop");
+    document.addEventListener("scroll", () => {
+        if (!backTop) return;
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        if (scrollTop > 500) { 
+            backTop.classList.add("show"); 
+        } else { 
+            backTop.classList.remove("show"); 
+        }
+    }, { passive: true });
+
+    if (backTop) {
+        backTop.addEventListener("click", () => {
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+        });
+    }    document.querySelectorAll(".copy-btn").forEach(button => {
+        button.addEventListener("click", async () => {
+            const codeBlock = button.nextElementSibling;
+            if (!codeBlock) return;
+            const code = codeBlock.innerText;
+            try {
+                await navigator.clipboard.writeText(code);
+                button.textContent = "Copied ✓";
+                setTimeout(() => { button.textContent = "Copy"; }, 1500);
+            } catch (error) {
+                button.textContent = "Select & Copy";
+            }
+        });
+    });
+
+    const searchInput = document.getElementById("searchInput");
+    const sections = document.querySelectorAll(".section-card");
+
+    if (searchInput) {
+        searchInput.addEventListener("input", () => {
+            const query = searchInput.value.toLowerCase().trim();
+            sections.forEach(section => {
+                const text = section.innerText.toLowerCase();
+                if (query === "" || text.includes(query)) {
+                    section.classList.remove("hidden");
+                } else {
+                    section.classList.add("hidden");
+                }
+            });
+        });
+    }
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape") { closeDrawer(); }
+    });
+
+    updateProgress();
+</script>
+</body>
+</html>
 
